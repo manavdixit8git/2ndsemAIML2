@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Valley Society - Home</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 50%, #1e3a5f 100%);
+        }
+        
+        .card-shadow {
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+        
+        .btn-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        
+        .notice-card {
+            border-left: 5px solid #f59e0b;
+            transition: all 0.3s ease;
+        }
+        
+        .notice-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .complaint-card {
+            border-left: 5px solid #3b82f6;
+        }
+        
+        .nav-link {
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .nav-link.active {
+            background: rgba(255,255,255,0.25);
+            border-bottom: 3px solid #fbbf24;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .pulse-dot {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .hero-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+        }
+        
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-in-progress { background: #dbeafe; color: #1e40af; }
+        .status-resolved { background: #d1fae5; color: #065f46; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    
+    <!-- Navigation -->
+    <nav class="gradient-bg hero-pattern sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between py-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-lg">
+                        <span class="text-2xl">🏠</span>
+                    </div>
+                    <div>
+                        <h1 class="text-white text-2xl md:text-3xl font-bold">Green Valley Society</h1>
+                        <p class="text-blue-200 text-sm md:text-base">A Place Called Home</p>
+                    </div>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden text-white p-2 rounded-lg bg-white/20">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-2">
+                    <button onclick="showSection('home')" class="nav-link active text-white px-6 py-3 rounded-lg text-lg font-medium" id="nav-home">
+                        🏠 Home
+                    </button>
+                    <button onclick="showSection('notices')" class="nav-link text-white px-6 py-3 rounded-lg text-lg font-medium" id="nav-notices">
+                        📢 Notices
+                    </button>
+                    <button onclick="showSection('complaints')" class="nav-link text-white px-6 py-3 rounded-lg text-lg font-medium" id="nav-complaints">
+                        📝 Complaints
+                    </button>
+                    <button onclick="showSection('admin')" class="nav-link text-white px-6 py-3 rounded-lg text-lg font-medium" id="nav-admin">
+                        ⚙️ Admin
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Navigation -->
+            <div id="mobileMenu" class="hidden md:hidden pb-4 space-y-2">
+                <button onclick="showSection('home'); toggleMobileMenu()" class="w-full text-left text-white px-6 py-3 rounded-lg text-lg font-medium bg-white/10 hover:bg-white/20">
+                    🏠 Home
+                </button>
+                <button onclick="showSection('notices'); toggleMobileMenu()" class="w-full text-left text-white px-6 py-3 rounded-lg text-lg font-medium bg-white/10 hover:bg-white/20">
+                    📢 Notices
+                </button>
+                <button onclick="showSection('complaints'); toggleMobileMenu()" class="w-full text-left text-white px-6 py-3 rounded-lg text-lg font-medium bg-white/10 hover:bg-white/20">
+                    📝 Complaints
+                </button>
+                <button onclick="showSection('admin'); toggleMobileMenu()" class="w-full text-left text-white px-6 py-3 rounded-lg text-lg font-medium bg-white/10 hover:bg-white/20">
+                    ⚙️ Admin
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        
+        <!-- HOME SECTION -->
+        <section id="home-section" class="fade-in">
+            <!-- Welcome Banner -->
+            <div class="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-3xl p-8 md:p-12 mb-8 card-shadow text-white hero-pattern">
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <div>
+                        <h2 class="text-3xl md:text-5xl font-bold mb-4">Welcome, Residents!</h2>
+                        <p class="text-xl md:text-2xl opacity-90 mb-6">Your comfort is our priority. We are here to help you.</p>
+                        <div class="flex flex-wrap gap-4">
+                            <button onclick="showSection('complaints')" class="bg-white text-emerald-700 px-8 py-4 rounded-xl text-xl font-semibold btn-hover transition-all">
+                                📝 Register Complaint
+                            </button>
+                            <button onclick="showSection('notices')" class="bg-emerald-700 text-white px-8 py-4 rounded-xl text-xl font-semibold btn-hover transition-all border-2 border-white">
+                                📢 View Notices
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mt-8 md:mt-0">
+                        <div class="w-48 h-48 bg-white/20 rounded-full flex items-center justify-center">
+                            <span class="text-8xl">🏘️</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-2xl p-6 card-shadow text-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-3xl">👥</span>
+                    </div>
+                    <h3 class="text-4xl font-bold text-gray-800">250+</h3>
+                    <p class="text-xl text-gray-600">Families</p>
+                </div>
+                <div class="bg-white rounded-2xl p-6 card-shadow text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-3xl">🌳</span>
+                    </div>
+                    <h3 class="text-4xl font-bold text-gray-800">15</h3>
+                    <p class="text-xl text-gray-600">Parks & Gardens</p>
+                </div>
+                <div class="bg-white rounded-2xl p-6 card-shadow text-center">
+                    <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-3xl">⚡</span>
+                    </div>
+                    <h3 class="text-4xl font-bold text-gray-800">24/7</h3>
+                    <p class="text-xl text-gray-600">Support Available</p>
+                </div>
+            </div>
+            
+            <!-- Latest Notices Preview -->
+            <div class="bg-white rounded-2xl p-6 md:p-8 card-shadow mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-800 flex items-center">
+                        <span class="mr-3">📢</span> Latest Notices
+                    </h2>
+                    <button onclick="showSection('notices')" class="text-blue-600 text-lg font-medium hover:underline">
+                        View All →
+                    </button>
+                </div>
+                <div id="home-notices-preview" class="space-y-4">
+                    <!-- Notices will be loaded here -->
+                </div>
+            </div>
+            
+            <!-- Important Contacts -->
+            <div class="bg-gradient-to-r from-rose-500 to-pink-600 rounded-2xl p-6 md:p-8 card-shadow text-white">
+                <h2 class="text-2xl md:text-3xl font-bold mb-6 flex items-center">
+                    <span class="mr-3">📞</span> Emergency Contacts
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-white/20 rounded-xl p-4">
+                        <p class="text-lg font-semibold">Security Office</p>
+                        <p class="text-2xl font-bold">📞 100</p>
+                    </div>
+                    <div class="bg-white/20 rounded-xl p-4">
+                        <p class="text-lg font-semibold">Ambulance</p>
+                        <p class="text-2xl font-bold">📞 108</p>
+                    </div>
+                    <div class="bg-white/20 rounded-xl p-4">
+                        <p class="text-lg font-semibold">Society Office</p>
+                        <p class="text-2xl font-bold">📞 022-2345</p>
+                    </div>
+                    <div class="bg-white/20 rounded-xl p-4">
+                        <p class="text-lg font-semibold">Maintenance</p>
+                        <p class="text-2xl font-bold">📞 98765-43210</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NOTICES SECTION -->
+        <section id="notices-section" class="hidden fade-in">
+            <div class="bg-white rounded-2xl p-6 md:p-8 card-shadow">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 flex items-center">
+                    <span class="mr-3">📢</span> Society Notices
+                </h2>
+                <p class="text-xl text-gray-600 mb-8">Stay updated with the latest announcements from the committee.</p>
+                
+                <div id="notices-list" class="space-y-6">
+                    <!-- Notices will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- COMPLAINTS SECTION -->
+        <section id="complaints-section" class="hidden fade-in">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- Register Complaint Form -->
+                <div class="bg-white rounded-2xl p-6 md:p-8 card-shadow">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 flex items-center">
+                        <span class="mr-3">📝</span> Register Complaint
+                    </h2>
+                    <p class="text-xl text-gray-600 mb-6">Facing any issue? Let us know and we'll help you resolve it quickly.</p>
+                    
+                    <form id="complaint-form" onsubmit="submitComplaint(event)" class="space-y-6">
+                        <div>
+                            <label class="block text-xl font-semibold text-gray-700 mb-2">Your Name *</label>
+                            <input type="text" id="complainant-name" required 
+                                class="w-full px-5 py-4 text-xl border-2 border-gray-300 rounded-xl focus:border-blue-500"
+                                placeholder="Enter your full name">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xl font-semibold text-gray-700 mb-2">Flat/House Number *</label>
+                            <input type="text" id="flat-number" required 
+                                class="w-full px-5 py-4 text-xl border-2 border-gray-300 rounded-xl focus:border-blue-500"
+                                placeholder="e.g., A-101">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xl font-semibold text-gray-700 mb-2">Phone Number *</label>
+                            <input type="tel" id="phone-number" required 
+                                class="w-full px-5 py-4 text-xl border-2 border-gray-300 rounded-xl focus:border-blue-500"
+                                placeholder="Enter your phone number">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xl font-semibold text-gray-700 mb-2">Category *</label>
+                            <select id="complaint-category" required 
+                                class="w-full px-5 py-4 text-xl border-2 border-gray-300 rounded-xl focus:border-blue-500 bg-white">
+                                <option value="">Select Category</option>
+                                <option value="Water Issue">💧 Water Issue</option>
+                                <option value="Electricity">⚡ Electricity Problem</option>
+                                <option value="Security">🔒 Security Concern</option>
+                                <option value="Cleanliness">🧹 Cleanliness</option>
+                                <option value="Maintenance">🔧 Maintenance</option>
+                                <option value="Parking">🚗 Parking Issue</option>
+                                <option value="Noise">🔊 Noise Complaint</option>
+                                <option value="Other">📋 Other</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xl font-semibold text-gray-700 mb-2">Describe Your Problem *</label>
+                            <textarea id="complaint-description" required rows="5"
+                                class="w-full px-5 py-4 text-xl border-2 border-gray-300 rounded-xl focus:border-blue-500"
+                                placeholder="Please describe your problem in detail..."></textarea>
+                        </div>
+                        
+                        <div class="bg-blue-50 rounded-xl p-4">
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="checkbox" id="urgent-complaint" class="w-6 h-6 rounded">
+                                <span class="text-xl text-gray-700">🚨 Mark as Urgent</span>
+                            </label>
+                        </div>
+                        
+                        <button type="submit" 
+                            class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-5 rounded-xl text-2xl font-bold btn-hover transition-all">
+                            ✅ Submit Complaint
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- My Complaints -->
+                <div class="bg-white rounded-2xl p-6 md:p-8 card-shadow">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 flex items-center">
+                        <span class="mr-3">📋</span> My Complaints
+                    </h2>
+                    <p class="text-xl text-gray-600 mb-6">Track the status of your registered complaints.</p>
+                    
+                    <div class="mb-6">
+                        <input type="text" id="search-complaint" onkeyup="searchComplaints()"
+                            class="w-full px-5 py-4 text-xl border-2 border-gray-300 rounded-xl"
+                            placeholder="🔍 Search by flat number or name...">
+                    </div>
+                    
+                    <div id="my-complaints" class="space-y-4 max-h-[600px] overflow-y-auto scrollbar-hide">
+                        <!-- Complaints will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ADMIN SECTION -->
+        <section id="admin-section" class="hidden fade-in">
+            
+            <!-- Admin Login -->
+            <div id="admin-login" class="max-w-lg mx-auto bg-white rounded-2xl p-6 md:p-8 card-shadow">
+                <div class="text-center mb-8">
+                    <div class="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-4xl">🔐</span>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Admin Login</h2>
+                    <p class="text-xl text-gray-600 mt-2">Committee members only</p>
+                </div>
+                
+                <form onsubmit="adminLogin(event)" class="space-y-6">
+                    <div>
+                        <label class="block text-xl font-semibold text-gray-700 mb-2">Username</label>
+                        <input type="text" id="admin-username" required 
+                            class="w-full px-5 py-4 text-xl border-2 border-gray-300 rounded-xl"
+                            placeholder="Enter username">
+                    </div>
+                    <div>
+                        <label class="block text-xl font-semibold text-gray-700 mb-2">Password</label>
+                        <input type="password" id="admin-password" required 
+                            class="w-full px-5 py-4 text-xl border-2 border-gray-300 rounded-xl"
+                            placeholder="Enter password">
+                    </div>
+                    <button type="submit" 
+                        class="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white py-4 rounded-xl text-xl font-bold btn-hover transition-all">
+                        🔓 Login
+                    </button>
+                </form>
+                
+                <div class="mt-6 p-4 bg-gray-100 rounded-xl">
+                    <p class="text-lg text-gray-600 text-center">
+                        <strong>Demo:</strong> Username: <span class="font-mono">admin</span> | Password: <span class="font-mono">admin123</span>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Admin Dashboard -->
+            <div id="admin-dashboard" class="hidden">
+                
+                <!-- Admin Header -->
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-800">⚙️ Admin Dashboard</h2>
+                        <p class="text-xl text-gray-600">Manage notices and complaints</p>
+                    </div>
+                    <button onclick="adminLogout()" 
+                        class="bg-red-500 text-white px-6 py-3 rounded-xl text-lg font-semibold btn-hover transition-all">
+                        🚪 Logout
+                    </button>
+                </div>
+                
+                <!-- Admin Tabs -->
+                <div class="flex flex-wrap gap-4 mb-8">
+                    <button onclick="showAdminTab('add-notice')" id="tab-add-notice"
+                        class="bg-amber-500 text-white px-8 py-4 rounded-xl text-xl font-semibold btn-hover transition-all">
+                        📢 Add Notice
+                    </button>
+                    <button onclick="showAdminTab('manage-complaints')" id="tab-manage-complaints"
+                        class="bg-gray-300 text-gray-700 px-8 py-4 rounded-xl text-xl font-semibold btn-hover transition-all">
+                        📋 Manage Complaints
+                    </button>
+                    <button onclick="showAdminTab('manage-notices')" id="tab-manage-notices"
+                        class="bg-gray-300 text-gray-700 px-8 py-4 rounded-xl text-xl font-semibold btn-hover transition-all">
+                        📝 Manage Notices
+                    </button>
+                </div>
+                
+                <!-- Add Notice Tab -->
+                <div id="add-notice-tab" class="bg-white rounded-2xl p-6 md:p-8 card-shadow">
+                    <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">📢 Create New Notice</h3>
+                    
+                    <form onsubmit="addNotice(event)" class="space-y-6">
+                        <div>
+                            <label class="block text-xl font-semibold text-gray-700 mb-2">Notice Title *</label>
+                            <input type="text" id="notice-title" required 
+                                class="w-full px-5 py-4 text-xl border-2 border-gray-300 rounded-xl"
+                                placeholder="Enter notice title">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xl font-semibold text-gray-700 mb-2">Notice Content *</label>
+                            <textarea id="notice-content" required rows="6"
+                                class="w-full px-5 py-4 text-xl border-2 border-gray-300 rounded-xl"
+                                placeholder="Enter notice details..."></textarea>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xl font-semibold text-gray-700 mb-2">Priority</label>
+                                <select id="notice-priority" 
+                                    class="w-full px-5 py-4 text-xl border-2 border-gray-300 rounded-xl bg-white">
+                                    <option value="normal">🟢 Normal</option>
+                                    <option value="important">🟡 Important</option>
+                                    <option value="urgent">🔴 Urgent</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xl font-semibold text-gray-700 mb-2">Category</label>
+                                <select id="notice-category" 
+                                    class="w-full px-5 py-4 text-xl border-2 border-gray-300 rounded-xl bg-white">
+                                    <option value="General">📋 General</option>
+                                    <option value="Meeting">👥 Meeting</option>
+                                    <option value="Maintenance">🔧 Maintenance</option>
+                                    <option value="Event">🎉 Event</option>
+                                    <option value="Emergency">🚨 Emergency</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" 
+                            class="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white py-5 rounded-xl text-2xl font-bold btn-hover transition-all">
+                            📢 Publish Notice
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Manage Complaints Tab -->
+                <div id="manage-complaints-tab" class="hidden bg-white rounded-2xl p-6 md:p-8 card-shadow">
+                    <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">📋 Manage All Complaints</h3>
+                    
+                    <div class="mb-6 flex flex-wrap gap-4">
+                        <button onclick="filterComplaints('all')" class="bg-blue-500 text-white px-6 py-3 rounded-xl text-lg font-medium">
+                            All
+                        </button>
+                        <button onclick="filterComplaints('pending')" class="bg-gray-300 text-gray-700 px-6 py-3 rounded-xl text-lg font-medium">
+                            🟡 Pending
+                        </button>
+                        <button onclick="filterComplaints('in-progress')" class="bg-gray-300 text-gray-700 px-6 py-3 rounded-xl text-lg font-medium">
+                            🔵 In Progress
+                        </button>
+                        <button onclick="filterComplaints('resolved')" class="bg-gray-300 text-gray-700 px-6 py-3 rounded-xl text-lg font-medium">
+                            🟢 Resolved
+                        </button>
+                    </div>
+                    
+                    <div id="admin-complaints-list" class="space-y-4 max-h-[600px] overflow-y-auto scrollbar-hide">
+                        <!-- Complaints will be loaded here -->
+                    </div>
+                </div>
+                
+                <!-- Manage Notices Tab -->
+                <div id="manage-notices-tab" class="hidden bg-white rounded-2xl p-6 md:p-8 card-shadow">
+                    <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">📝 Manage All Notices</h3>
+                    
+                    <div id="admin-notices-list" class="space-y-4">
+                        <!-- Notices will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="flex items-center justify-center space-x-3 mb-4">
+                <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center">
+                    <span class="text-2xl">🏠</span>
+                </div>
+                <span class="text-2xl font-bold">Green Valley Society</span>
+            </div>
+            <p class="text-xl text-blue-200 mb-4">Building a better community together</p>
+            <p class="text-lg text-blue-300">© 2024 Green Valley Society. All rights reserved.</p>
+            <p class="text-lg text-blue-300 mt-2">📍 123 Green Valley Road, City - 400001</p>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-8 right-8 bg-green-500 text-white px-8 py-4 rounded-xl text-xl font-semibold shadow-2xl transform translate-y-full opacity-0 transition-all duration-300 z-50">
+        <span id="toast-message">Success!</span>
+    </div>
+
+    <script>
+        // ========== DATA STORAGE ==========
+        let notices = JSON.parse(localStorage.getItem('societyNotices')) || [
+            {
+                id: 1,
+                title: "Annual General Meeting on Sunday",
+                content: "Dear Residents, The Annual General Meeting will be held on Sunday, 15th December 2024 at 10:00 AM in the Community Hall. All residents are requested to attend. Important matters regarding society maintenance and budget will be discussed.",
+                priority: "important",
+                category: "Meeting",
+                date: "2024-12-10",
+                author: "Secretary"
+            },
+            {
+                id: 2,
+                title: "Water Supply Interruption Notice",
+                content: "Due to maintenance work in the main pipeline, there will be no water supply on Wednesday, 12th December from 9:00 AM to 5:00 PM. Please store sufficient water for your needs.",
+                priority: "urgent",
+                category: "Maintenance",
+                date: "2024-12-08",
+                author: "Maintenance Team"
+            },
+            {
+                id: 3,
+                title: "New Year Celebration 2025",
+                content: "Join us for the New Year Celebration on 31st December 2024 at the Society Garden. Cultural programs, music, and dinner will be arranged. Please register your names with the office by 25th December.",
+                priority: "normal",
+                category: "Event",
+                date: "2024-12-05",
+                author: "Cultural Committee"
+            }
+        ];
+
+        let complaints = JSON.parse(localStorage.getItem('societyComplaints')) || [
+            {
+                id: 1,
+                name: "Rajesh Kumar",
+                flat: "A-101",
+                phone: "98765-43210",
+                category: "Water Issue",
+                description: "Low water pressure in our flat since last 3 days. Please check the pipeline.",
+                urgent: false,
+                status: "in-progress",
+                date: "2024-12-08",
+                remarks: "Plumber assigned. Work in progress."
+            },
+            {
+                id: 2,
+                name: "Meera Sharma",
+                flat: "B-205",
+                phone: "87654-32109",
+                category: "Security",
+                description: "Street light near Block B entrance is not working. It's very dark and unsafe at night.",
+                urgent: true,
+                status: "pending",
+                date: "2024-12-09",
+                remarks: ""
+            }
+        ];
+
+        let isLoggedIn = false;
+        let currentFilter = 'all';
+
+        // ========== NAVIGATION ==========
+        function showSection(section) {
+            // Hide all sections
+            document.getElementById('home-section').classList.add('hidden');
+            document.getElementById('notices-section').classList.add('hidden');
+            document.getElementById('complaints-section').classList.add('hidden');
+            document.getElementById('admin-section').classList.add('hidden');
+
+            // Remove active class from all nav links
+            document.getElementById('nav-home').classList.remove('active');
+            document.getElementById('nav-notices').classList.remove('active');
+            document.getElementById('nav-complaints').classList.remove('active');
+            document.getElementById('nav-admin').classList.remove('active');
+
+            // Show selected section
+            document.getElementById(section + '-section').classList.remove('hidden');
+            document.getElementById('nav-' + section).classList.add('active');
+
+            // Load content
+            if (section === 'notices') loadNotices();
+            if (section === 'complaints') loadMyComplaints();
+            if (section === 'home') loadHomeNotices();
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // ========== NOTICES ==========
+        function loadHomeNotices() {
+            const container = document.getElementById('home-notices-preview');
+            const recentNotices = notices.slice(0, 2);
+            
+            if (recentNotices.length === 0) {
+                container.innerHTML = '<p class="text-xl text-gray-500 text-center py-8">No notices available</p>';
+                return;
+            }
+
+            container.innerHTML = recentNotices.map(notice => `
+                <div class="notice-card bg-amber-50 rounded-xl p-5">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="px-3 py-1 rounded-full text-sm font-semibold ${getPriorityClass(notice.priority)}">
+                                    ${getPriorityBadge(notice.priority)}
+                                </span>
+                                <span class="text-gray-500 text-lg">${notice.category}</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">${notice.title}</h3>
+                            <p class="text-lg text-gray-600 line-clamp-2">${notice.content}</p>
+                            <p class="text-gray-500 mt-2">📅 ${formatDate(notice.date)}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadNotices() {
+            const container = document.getElementById('notices-list');
+            
+            if (notices.length === 0) {
+                container.innerHTML = '<p class="text-xl text-gray-500 text-center py-8">No notices available at the moment.</p>';
+                return;
+            }
+
+            container.innerHTML = notices.map(notice => `
+                <div class="notice-card bg-gray-50 rounded-xl p-6">
+                    <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                        <div class="flex-1">
+                            <div class="flex flex-wrap items-center gap-3 mb-3">
+                                <span class="px-4 py-2 rounded-full text-lg font-semibold ${getPriorityClass(notice.priority)}">
+                                    ${getPriorityBadge(notice.priority)}
+                                </span>
+                                <span class="bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-lg">${notice.category}</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-3">${notice.title}</h3>
+                            <p class="text-xl text-gray-600 leading-relaxed">${notice.content}</p>
+                            <div class="flex flex-wrap gap-6 mt-4 text-lg text-gray-500">
+                                <span>📅 ${formatDate(notice.date)}</span>
+                                <span>👤 ${notice.author}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getPriorityClass(priority) {
+            switch(priority) {
+                case 'urgent': return 'bg-red-100 text-red-700';
+                case 'important': return 'bg-amber-100 text-amber-700';
+                default: return 'bg-green-100 text-green-700';
+            }
+        }
+
+        function getPriorityBadge(priority) {
+            switch(priority) {
+                case 'urgent': return '🔴 Urgent';
+                case 'important': return '🟡 Important';
+                default: return '🟢 Normal';
+            }
+        }
+
+        // ========== COMPLAINTS ==========
+        function submitComplaint(event) {
+            event.preventDefault();
+            
+            const newComplaint = {
+                id: Date.now(),
+                name: document.getElementById('complainant-name').value,
+                flat: document.getElementById('flat-number').value,
+                phone: document.getElementById('phone-number').value,
+                category: document.getElementById('complaint-category').value,
+                description: document.getElementById('complaint-description').value,
+                urgent: document.getElementById('urgent-complaint').checked,
+                status: 'pending',
+                date: new Date().toISOString().split('T')[0],
+                remarks: ''
+            };
+
+            complaints.unshift(newComplaint);
+            saveData();
+            
+            document.getElementById('complaint-form').reset();
+            loadMyComplaints();
+            showToast('✅ Complaint registered successfully! We will look into it.');
+        }
+
+        function loadMyComplaints() {
+            const container = document.getElementById('my-complaints');
+            const searchTerm = document.getElementById('search-complaint')?.value?.toLowerCase() || '';
+            
+            let filteredComplaints = complaints;
+            if (searchTerm) {
+                filteredComplaints = complaints.filter(c => 
+                    c.name.toLowerCase().includes(searchTerm) || 
+                    c.flat.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            if (filteredComplaints.length === 0) {
+                container.innerHTML = '<p class="text-xl text-gray-500 text-center py-8">No complaints found.</p>';
+                return;
+            }
+
+            container.innerHTML = filteredComplaints.map(complaint => `
+                <div class="complaint-card bg-blue-50 rounded-xl p-5">
+                    <div class="flex items-start justify-between mb-3">
+                        <h4 class="text-xl font-bold text-gray-800">${complaint.flat} - ${complaint.name}</h4>
+                        ${complaint.urgent ? '<span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">🚨 URGENT</span>' : ''}
+                    </div>
+                    <p class="text-lg text-gray-600 mb-2"><strong>Category:</strong> ${complaint.category}</p>
+                    <p class="text-lg text-gray-600 mb-3">${complaint.description}</p>
+                    <div class="flex flex-wrap items-center gap-3">
+                        <span class="px-4 py-2 rounded-full text-lg font-semibold ${getStatusClass(complaint.status)}">
+                            ${getStatusBadge(complaint.status)}
+                        </span>
+                        <span class="text-gray-500 text-lg">📅 ${formatDate(complaint.date)}</span>
+                    </div>
+                    ${complaint.remarks ? `<p class="mt-3 text-lg text-blue-700 bg-blue-100 p-3 rounded-lg"><strong>Admin Remarks:</strong> ${complaint.remarks}</p>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function searchComplaints() {
+            loadMyComplaints();
+        }
+
+        function getStatusClass(status) {
+            switch(status) {
+                case 'resolved': return 'status-resolved';
+                case 'in-progress': return 'status-in-progress';
+                default: return 'status-pending';
+            }
+        }
+
+        function getStatusBadge(status) {
+            switch(status) {
+                case 'resolved': return '✅ Resolved';
+                case 'in-progress': return '🔄 In Progress';
+                default: return '⏳ Pending';
+            }
+        }
+
+        // ========== ADMIN ==========
+        function adminLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+
+            if (username === 'admin' && password === 'admin123') {
+                isLoggedIn = true;
+                document.getElementById('admin-login').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                loadAdminComplaints();
+                loadAdminNotices();
+                showToast('✅ Login successful! Welcome, Admin.');
+            } else {
+                showToast('❌ Invalid credentials. Please try again.');
+            }
+        }
+
+        function adminLogout() {
+            isLoggedIn = false;
+            document.getElementById('admin-login').classList.remove('hidden');
+            document.getElementById('admin-dashboard').classList.add('hidden');
+            document.getElementById('admin-username').value = '';
+            document.getElementById('admin-password').value = '';
+            showToast('👋 Logged out successfully.');
+        }
+
+        function showAdminTab(tab) {
+            document.getElementById('add-notice-tab').classList.add('hidden');
+            document.getElementById('manage-complaints-tab').classList.add('hidden');
+            document.getElementById('manage-notices-tab').classList.add('hidden');
+
+            document.getElementById('tab-add-notice').classList.remove('bg-amber-500', 'text-white');
+            document.getElementById('tab-add-notice').classList.add('bg-gray-300', 'text-gray-700');
+            document.getElementById('tab-manage-complaints').classList.remove('bg-amber-500', 'text-white');
+            document.getElementById('tab-manage-complaints').classList.add('bg-gray-300', 'text-gray-700');
+            document.getElementById('tab-manage-notices').classList.remove('bg-amber-500', 'text-white');
+            document.getElementById('tab-manage-notices').classList.add('bg-gray-300', 'text-gray-700');
+
+            document.getElementById(tab + '-tab').classList.remove('hidden');
+            document.getElementById('tab-' + tab).classList.remove('bg-gray-300', 'text-gray-700');
+            document.getElementById('tab-' + tab).classList.add('bg-amber-500', 'text-white');
+        }
+
+        function addNotice(event) {
+            event.preventDefault();
+
+            const newNotice = {
+                id: Date.now(),
+                title: document.getElementById('notice-title').value,
+                content: document.getElementById('notice-content').value,
+                priority: document.getElementById('notice-priority').value,
+                category: document.getElementById('notice-category').value,
+                date: new Date().toISOString().split('T')[0],
+                author: "Committee"
+            };
+
+            notices.unshift(newNotice);
+            saveData();
+            
+            document.getElementById('notice-title').value = '';
+            document.getElementById('notice-content').value = '';
+            document.getElementById('notice-priority').value = 'normal';
+            document.getElementById('notice-category').value = 'General';
+            
+            loadAdminNotices();
+            showToast('📢 Notice published successfully!');
+        }
+
+        function loadAdminComplaints() {
+            const container = document.getElementById('admin-complaints-list');
+            let filteredComplaints = complaints;
+
+            if (currentFilter !== 'all') {
+                filteredComplaints = complaints.filter(c => c.status === currentFilter);
+            }
+
+            if (filteredComplaints.length === 0) {
+                container.innerHTML = '<p class="text-xl text-gray-500 text-center py-8">No complaints found.</p>';
+                return;
+            }
+
+            container.innerHTML = filteredComplaints.map(complaint => `
+                <div class="bg-gray-50 rounded-xl p-5 border-l-4 ${complaint.urgent ? 'border-red-500' : 'border-blue-500'}">
+                    <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                        <div class="flex-1">
+                            <div class="flex flex-wrap items-center gap-3 mb-2">
+                                <span class="text-xl font-bold text-gray-800">${complaint.flat} - ${complaint.name}</span>
+                                ${complaint.urgent ? '<span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm">🚨 URGENT</span>' : ''}
+                            </div>
+                            <p class="text-lg text-gray-600 mb-2"><strong>Phone:</strong> ${complaint.phone}</p>
+                            <p class="text-lg text-gray-600 mb-2"><strong>Category:</strong> ${complaint.category}</p>
+                            <p class="text-lg text-gray-600 mb-3">${complaint.description}</p>
+                            <p class="text-gray-500">📅 ${formatDate(complaint.date)}</p>
+                        </div>
+                        <div class="flex flex-col gap-3 min-w-[200px]">
+                            <select onchange="updateStatus(${complaint.id}, this.value)" 
+                                class="px-4 py-3 text-lg border-2 border-gray-300 rounded-xl bg-white">
+                                <option value="pending" ${complaint.status === 'pending' ? 'selected' : ''}>⏳ Pending</option>
+                                <option value="in-progress" ${complaint.status === 'in-progress' ? 'selected' : ''}>🔄 In Progress</option>
+                                <option value="resolved" ${complaint.status === 'resolved' ? 'selected' : ''}>✅ Resolved</option>
+                            </select>
+                            <input type="text" placeholder="Add remarks..." 
+                                value="${complaint.remarks}"
+                                onchange="updateRemarks(${complaint.id}, this.value)"
+                                class="px-4 py-3 text-lg border-2 border-gray-300 rounded-xl">
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterComplaints(filter) {
+            currentFilter = filter;
+            loadAdminComplaints();
+        }
+
+        function updateStatus(id, status) {
+            const complaint = complaints.find(c => c.id === id);
+            if (complaint) {
+                complaint.status = status;
+                saveData();
+                showToast('✅ Status updated successfully!');
+            }
+        }
+
+        function updateRemarks(id, remarks) {
+            const complaint = complaints.find(c => c.id === id);
+            if (complaint) {
+                complaint.remarks = remarks;
+                saveData();
+            }
+        }
+
+        function loadAdminNotices() {
+            const container = document.getElementById('admin-notices-list');
+            
+            if (notices.length === 0) {
+                container.innerHTML = '<p class="text-xl text-gray-500 text-center py-8">No notices available.</p>';
+                return;
+            }
+
+            container.innerHTML = notices.map(notice => `
+                <div class="bg-gray-50 rounded-xl p-5 border-l-4 border-amber-500">
+                    <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                        <div class="flex-1">
+                            <h4 class="text-xl font-bold text-gray-800 mb-2">${notice.title}</h4>
+                            <p class="text-lg text-gray-600 mb-2">${notice.content.substring(0, 100)}...</p>
+                            <div class="flex flex-wrap gap-3">
+                                <span class="px-3 py-1 rounded-full text-sm font-semibold ${getPriorityClass(notice.priority)}">
+                                    ${getPriorityBadge(notice.priority)}
+                                </span>
+                                <span class="text-gray-500">📅 ${formatDate(notice.date)}</span>
+                            </div>
+                        </div>
+                        <button onclick="deleteNotice(${notice.id})" 
+                            class="bg-red-500 text-white px-6 py-3 rounded-xl text-lg font-semibold btn-hover transition-all">
+                            🗑️ Delete
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteNotice(id) {
+            if (confirm('Are you sure you want to delete this notice?')) {
+                notices = notices.filter(n => n.id !== id);
+                saveData();
+                loadAdminNotices();
+                showToast('🗑️ Notice deleted successfully!');
+            }
+        }
+
+        // ========== UTILITY FUNCTIONS ==========
+        function saveData() {
+            localStorage.setItem('societyNotices', JSON.stringify(notices));
+            localStorage.setItem('societyComplaints', JSON.stringify(complaints));
+        }
+
+        function formatDate(dateStr) {
+            const options = { day: 'numeric', month: 'short', year: 'numeric' };
+            return new Date(dateStr).toLocaleDateString('en-IN', options);
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            
+            toastMessage.textContent = message;
+            toast.classList.remove('translate-y-full', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-full', 'opacity-0');
+            }, 3000);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadHomeNotices();
+        });
+    </script>
+</body>
+</html>
